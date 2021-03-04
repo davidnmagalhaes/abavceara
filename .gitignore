@@ -1,0 +1,3 @@
+# dependencies
+/painel/config-db.php
+/painel/class/Sql.php
