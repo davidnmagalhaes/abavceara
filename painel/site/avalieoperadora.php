@@ -281,7 +281,7 @@ $totalRows_blog2 = mysqli_num_rows($blog2);
                   </div>
                 <?php endif; ?>
 
-                <input class="thbg-color" type="submit" value="Solicitar" style="background: #40a02e; color: #fff">
+                <input class="thbg-color" type="submit" value="Enviar" style="background: #40a02e; color: #fff">
               </form>
             </div>
           </div>
