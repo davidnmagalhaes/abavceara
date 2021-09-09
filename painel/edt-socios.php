@@ -311,13 +311,27 @@ $row_lisfilho = mysqli_fetch_assoc($lisfilho);
 												<option disabled <?php if ($row_lis['classif_socio'] == "") {
 																						echo "selected";
 																					}; ?>>Selecione...</option>
-												<option value="agencia">Agência</option>
-												<option value="hotel">Hotel</option>
-												<option value="restaurante">Restaurante</option>
-												<option value="barraca">Barraca de Praia</option>
-												<option value="casa_noturna">Casa Noturna</option>
-												<option value="parque">Parque Temático</option>
-												<option value="operadora">Operadora</option>
+												<option value="agencia" <?php if ($row_lis['classif_socio'] == "agencia") {
+																						echo "selected";
+																					}; ?>>Agência</option>
+												<option value="hotel" <?php if ($row_lis['classif_socio'] == "hotel") {
+																						echo "selected";
+																					}; ?>>Hotel</option>
+												<option value="restaurante" <?php if ($row_lis['classif_socio'] == "restaurante") {
+																						echo "selected";
+																					}; ?>>Restaurante</option>
+												<option value="barraca" <?php if ($row_lis['classif_socio'] == "barraca") {
+																						echo "selected";
+																					}; ?>>Barraca de Praia</option>
+												<option value="casa_noturna" <?php if ($row_lis['classif_socio'] == "casa_noturna") {
+																						echo "selected";
+																					}; ?>>Casa Noturna</option>
+												<option value="parque" <?php if ($row_lis['classif_socio'] == "parque") {
+																						echo "selected";
+																					}; ?>>Parque Temático</option>
+												<option value="operadora" <?php if ($row_lis['classif_socio'] == "operadora") {
+																						echo "selected";
+																					}; ?>>Operadora</option>
 											</select>
 										</div>
 									</div>
@@ -348,20 +362,53 @@ $row_lisfilho = mysqli_fetch_assoc($lisfilho);
 
 
 								<div class="row form-group">
-
-									<div class="col-12 col-md-4">
+								<div class="col-12 col-md-3">
+										<div class="form-group">
+											<label for="tipo_cnpj" class=" form-control-label">Tipo de CNPJ</label>
+											<select name="tipo_cnpj" class="form-control" value="<?php echo $row_lis['tipo_cnpj']; ?>">
+												<option disabled <?php if ($row_lis['tipo_cnpj'] == "") {
+																						echo "selected";
+																					}; ?>>Selecione...</option>
+												<option value="ss" <?php if ($row_lis['tipo_cnpj'] == "ss") {
+																						echo "selected";
+																					}; ?>>Sociedade Simples (SS)</option>
+												<option value="mei" <?php if ($row_lis['tipo_cnpj'] == "mei") {
+																						echo "selected";
+																					}; ?>>Microempreendedor Individual (MEI)</option>
+												<option value="ei" <?php if ($row_lis['tipo_cnpj'] == "ei") {
+																						echo "selected";
+																					}; ?>>Empresa Individual (EI)</option>
+												<option value="eireli" <?php if ($row_lis['tipo_cnpj'] == "eireli") {
+																						echo "selected";
+																					}; ?>>Empresa Individual de Responsabilidade Limitada (EIRELI)</option>
+												<option value="sa" <?php if ($row_lis['tipo_cnpj'] == "sa") {
+																						echo "selected";
+																					}; ?>>Sociedade Anônima (SA)</option>
+												<option value="ltda" <?php if ($row_lis['tipo_cnpj'] == "ltda") {
+																						echo "selected";
+																					}; ?>>Sociedade Empresária Limitada (LTDA)</option>
+												<option value="asfl" <?php if ($row_lis['tipo_cnpj'] == "asfl") {
+																						echo "selected";
+																					}; ?>>Associações Sem Fins Lucrativos.</option>
+												<option value="slu" <?php if ($row_lis['tipo_cnpj'] == "slu") {
+																						echo "selected";
+																					}; ?>>Sociedade Limitada Unipessoal (SLU)</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-12 col-md-3">
 										<div class="form-group">
 											<label for="email_socio" class=" form-control-label">E-mail do Sócio</label>
 											<input type="email" name="email_socio" id="email_socio" value="<?php echo $row_lis['email_socio']; ?>" class="form-control" required>
 										</div>
 									</div>
-									<div class="col-12 col-md-4">
+									<div class="col-12 col-md-3">
 										<div class="form-group">
 											<label for="telefone_socio" class=" form-control-label">Telefone do Sócio</label>
 											<input type="tel" name="telefone_socio" id="telefone_socio" value="<?php echo $row_lis['telefone_socio']; ?>" class="form-control" required>
 										</div>
 									</div>
-									<div class="col-12 col-md-4">
+									<div class="col-12 col-md-3">
 										<div class="form-group">
 											<label for="telefone_socio" class=" form-control-label">Celular do Sócio</label>
 											<input type="tel" name="celular_socio" id="celular_socio" maxlength="14" onkeydown="javascript: fMasc( this, mTel );" value="<?php echo $row_lis['celular_socio']; ?>" class="form-control " required>

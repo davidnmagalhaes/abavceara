@@ -3,6 +3,21 @@ $page = 3;
 
 include('config-header.php');
 
+spl_autoload_register(function ($class) {
+    require_once('class' . DIRECTORY_SEPARATOR . $class . '.php');
+  });
+
+$filtromes = $_GET['filtromes']; //Ano de Filtro
+$filtroano = $_GET['filtroano']; //Mês de Filtro
+
+if ($filtromes == "" && $filtroano == "") {
+    $filtromes = date('m'); //Mês atual
+    $filtroano = date('Y'); //Ano atual
+}
+
+$transacoes = new Transactions; 
+
+
 //Seleciona todas as contas bancárias
 $sql = "SELECT * FROM rfa_bancos INNER JOIN rfa_lista_bancos ON rfa_bancos.banco = rfa_lista_bancos.cod_lista_banco INNER JOIN rfa_lista_tipo_banco ON rfa_bancos.tipo_conta = rfa_lista_tipo_banco.cod_lista_tipo_banco WHERE rfa_bancos.clube='$clube' AND rfa_bancos.favorecido <> 'Caixa' ORDER BY rfa_bancos.conta_mensalidade DESC, rfa_bancos.favorecido ASC";
 $listabancos = mysqli_query($link, $sql) or die(mysqli_error($link));
@@ -12,10 +27,6 @@ $totalRows_listabancos = mysqli_num_rows($listabancos);
 $scx = "SELECT * FROM rfa_bancos WHERE favorecido='Caixa' AND clube='$clube'";
 $listacx = mysqli_query($link, $scx) or die(mysqli_error($link));
 $totalRows_listacx = mysqli_num_rows($listacx);
-
-
-
-
 
 ?>
 
@@ -248,6 +259,16 @@ $totalRows_listacx = mysqli_num_rows($listacx);
                                                     <span>
                                                         <strong>
                                                             <?php
+                                                            $transacoes->totalDespesasPorBanco($clube, $row_listacx['cod_banco']);
+                                                            $transacoes->totalReceitasPorBanco($clube, $row_listacx['cod_banco']);
+                                                            $transacoes->totalMensalidadesPorBanco($clube, 0);
+                                                            $transacoes->totalFundosPorBanco($clube, $row_listacx['cod_banco']);
+                                                            $transacoes->totalSaldosBancosPorBanco($clube, $row_listacx['cod_banco']);
+                                                            $transacoes->totalBoletosAvulsosPorBanco($clube, 0);
+                                                            $transacoes->totalRetiradasPorBanco($clube, $row_listacx['cod_banco']);
+                                                            $transacoes->totalTaxasBoletosPorBanco($clube, 0);
+                                                            $transacoes->totalTaxasMensalidadesPorBanco($clube, 0);
+
                                                             $orgbnccx = $row_listacx['cod_banco'];
                                                             $saldcx = $row_listacx['saldo'];
                                                             $mhjcx = date('m');
@@ -269,7 +290,7 @@ $totalRows_listacx = mysqli_num_rows($listacx);
 
 
 
-                                                            R$ <?php echo number_format($ttgcx, 2, ',', '.'); ?></strong>
+                                                            R$ <?php echo number_format($transacoes->totalSaldoPorBanco(), 2, ',', '.'); ?></strong>
                                                     </span>
                                                 </div>
                                             </td>
@@ -391,6 +412,16 @@ $totalRows_listacx = mysqli_num_rows($listacx);
                                                     <span>
                                                         <strong>
                                                             <?php
+                                                            $transacoes->totalDespesasPorBanco($clube, $row_listabancos['cod_banco']);
+                                                            $transacoes->totalReceitasPorBanco($clube, $row_listabancos['cod_banco']);
+                                                            $transacoes->totalMensalidadesPorBanco($clube, $row_listabancos['conta_mensalidade']);
+                                                            $transacoes->totalFundosPorBanco($clube, $row_listabancos['cod_banco']);
+                                                            $transacoes->totalSaldosBancosPorBanco($clube, $row_listabancos['cod_banco']);
+                                                            $transacoes->totalBoletosAvulsosPorBanco($clube, $row_listabancos['conta_mensalidade']);
+                                                            $transacoes->totalRetiradasPorBanco($clube, $row_listabancos['cod_banco']);
+                                                            $transacoes->totalTaxasBoletosPorBanco($clube, $row_listabancos['conta_mensalidade']);
+                                                            $transacoes->totalTaxasMensalidadesPorBanco($clube,$row_listabancos['conta_mensalidade']);
+
                                                             $orgbnc = $row_listabancos['cod_banco'];
                                                             $cntmens = $row_listabancos['conta_mensalidade'];
                                                             $saldmes = $row_listabancos['saldo'];
@@ -422,7 +453,7 @@ $totalRows_listacx = mysqli_num_rows($listacx);
 
 
 
-                                                            R$ <?php echo number_format($ttg, 2, ',', '.'); ?></strong>
+                                                            R$ <?php echo number_format($transacoes->totalSaldoPorBanco(), 2, ',', '.'); ?></strong>
                                                     </span>
                                                 </div>
                                             </td>

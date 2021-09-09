@@ -222,7 +222,7 @@ function moeda(a, e, r, t) {
                                                 <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLabel">Remover Despesa Recorrente</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Fechar">
                                                     <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -246,7 +246,7 @@ function moeda(a, e, r, t) {
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                                     <button type="submit" class="btn btn-primary">Avançar</button>
                                                 </div>
                                                 </form>
@@ -294,7 +294,7 @@ function moeda(a, e, r, t) {
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                         <?php }else{ ?>
-                                                        <a href="#" data-toggle="modal" data-target="#deleterecorrente<?php echo $row_lis['id_prev_pagar'];?>" class="item" data-toggle="tooltip" data-placement="top" title="Deletar">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#deleterecorrente<?php echo $row_lis['id_prev_pagar'];?>" class="item" data-bs-toggle="tooltip" data-placement="top" title="Deletar">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                         <?php } ?>

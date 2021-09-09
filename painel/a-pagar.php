@@ -254,7 +254,7 @@ if ($_GET['hoje'] == "mes") {
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                     <?php } else { ?>
-                                                        <a href="#" data-toggle="modal" data-target="#deleterecorrente<?php echo $row_lis['id_pagar']; ?>" class="item" data-toggle="tooltip" data-placement="top" title="Deletar">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#deleterecorrente<?php echo $row_lis['id_pagar']; ?>" class="item" data-bs-toggle="tooltip" data-placement="top" title="Deletar">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                     <?php } ?>

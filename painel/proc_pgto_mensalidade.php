@@ -42,9 +42,10 @@ $sqms = "SELECT * FROM rfa_mensalidades WHERE id_socio='$idsocio' AND clube='$cl
 $verms = mysqli_query($link, $sqms) or die(mysqli_error($link));
 $row_verms = mysqli_fetch_assoc($verms);
 $totalRows_verms = mysqli_num_rows($verms);
+$codmensal = $row_verms['cod_mensalidade'];
 
 if($totalRows_verms > 0){
-	$sql = "UPDATE rfa_mensalidades SET tipo_pagamento = '$tipopgto', taxa = '$txnew', data_pagamento='$datapagamento',  pagamento='$statuspagamento', valor_mensalidade='$valormens' WHERE id_socio = '$idsocio' AND clube='$club' AND data_mensalidade = '$datamensalidade';";
+	$sql = "UPDATE rfa_mensalidades SET tipo_pagamento = '$tipopgto', taxa = '$txnew', data_pagamento='$datapagamento',  pagamento='$statuspagamento', valor_mensalidade='$valormens' WHERE cod_mensalidade = '$codmensal';";
 }else{
 	$codmens = rand();
 

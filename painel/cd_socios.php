@@ -345,20 +345,35 @@ include('config-header.php');
 
 
 								<div class="row form-group">
-
-									<div class="col-12 col-md-4">
+								<div class="col-12 col-md-3">
+										<div class="form-group">
+											<label for="tipo_cnpj" class=" form-control-label">Tipo de CNPJ</label>
+											<select name="tipo_cnpj" class="form-control">
+												<option selected disabled>Selecione...</option>
+												<option value="ss">Sociedade Simples (SS)</option>
+												<option value="mei">Microempreendedor Individual (MEI)</option>
+												<option value="ei">Empresa Individual (EI)</option>
+												<option value="eireli">Empresa Individual de Responsabilidade Limitada (EIRELI)</option>
+												<option value="sa">Sociedade Anônima (SA)</option>
+												<option value="ltda">Sociedade Empresária Limitada (LTDA)</option>
+												<option value="asfl">Associações Sem Fins Lucrativos.</option>
+												<option value="slu">Sociedade Limitada Unipessoal (SLU)</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-12 col-md-3">
 										<div class="form-group">
 											<label for="email_socio" class=" form-control-label">E-mail do Associado</label>
 											<input type="email" name="email_socio" id="email_socio" class="form-control" required>
 										</div>
 									</div>
-									<div class="col-12 col-md-4">
+									<div class="col-12 col-md-3">
 										<div class="form-group">
 											<label for="telefone_socio" class=" form-control-label">Telefone fixo do Associado</label>
 											<input type="tel" name="telefone_socio" id="telefone_socio" maxlength="14" onkeydown="javascript: fMasc( this, mTel );" class="form-control telefone" required>
 										</div>
 									</div>
-									<div class="col-12 col-md-4">
+									<div class="col-12 col-md-3">
 										<div class="form-group">
 											<label for="telefone_socio" class=" form-control-label">Celular do Associado</label>
 											<input type="tel" name="celular_socio" id="celular_socio" maxlength="14" onkeydown="javascript: fMasc( this, mTel );" class="form-control telefone">

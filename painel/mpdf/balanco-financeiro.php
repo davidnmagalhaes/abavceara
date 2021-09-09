@@ -2,20 +2,67 @@
 require_once __DIR__ . '/vendor/autoload.php';
 include_once("../config.php");
 
-$filtromes = $_POST['filtromes'];//Ano de Filtro
-$filtroano = $_POST['filtroano'];//Mês de Filtro
+spl_autoload_register(function ($class) {
+    require_once('../class' . DIRECTORY_SEPARATOR . $class . '.php');
+  });
 
-if($filtromes == "" && $filtroano == ""){
-	$filtromes = date('m');//Mês atual
-	$filtroano = date('Y');//Ano atual
-} 
+$clube = $_POST['clube'];
+
+$filtromes = $_POST['filtromes']; //Ano de Filtro
+$filtroano = $_POST['filtroano']; //Mês de Filtro
+
+if ($filtromes == "" && $filtroano == "") {
+    $filtromes = date('m'); //Mês atual
+    $filtroano = date('Y'); //Ano atual
+}
+
+$transacoes = new Transactions; 
+$transacoes->totalDespesas($clube);
+$transacoes->totalReceitas($clube);
+$transacoes->totalMensalidades($clube);
+$transacoes->totalFundos($clube);
+$transacoes->totalSaldosBancos($clube);
+$transacoes->totalBoletosAvulsos($clube);
+$transacoes->totalRetiradas($clube);
+$transacoes->totalInadimplencias($clube);
+$transacoes->totalTaxasBoletos($clube);
+$transacoes->totalTaxasMensalidades($clube);
+
+$transacoes->totalDespesasMes($clube, $filtromes, $filtroano);
+$transacoes->totalDespesasMesPrevistas($clube, $filtromes, $filtroano);
+$transacoes->totalReceitasMes($clube, $filtromes, $filtroano);
+$transacoes->totalReceitasMesPrevistas($clube, $filtromes, $filtroano);
+$transacoes->totalBoletosAvulsosPrevistosMes($clube, $filtromes, $filtroano);
+$transacoes->totalFundosPrevistosMes($clube, $filtromes, $filtroano);
+$transacoes->totalRetiradasPrevistasMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasBoletosPrevistasMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasMensalidadesPrevistasMes($clube, $filtromes, $filtroano);
+$transacoes->totalMensalidadesMes($clube, $filtromes, $filtroano);
+$transacoes->totalMensalidadesMesPrevistas($clube, $filtromes, $filtroano);
+
+$transacoes->totalFundosMes($clube, $filtromes, $filtroano);
+$transacoes->totalBoletosAvulsosMes($clube, $filtromes, $filtroano);
+$transacoes->totalRetiradasMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasBoletosMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasMensalidadesMes($clube, $filtromes, $filtroano);
+$transacoes->totalInadimplenciasMes($clube, $filtromes, $filtroano);
+$transacoes->setTotalSaldoMesPassado($clube, $filtromes, $filtroano);
+
+$ultimo_dia = date("t", mktime(0,0,0,$filtromes,'01',$filtroano));
+$data = $filtroano."-".$filtromes."-".$ultimo_dia;
+$dataatual = date('Y-m-d',strtotime($data));
+
+$date = new DateTime($dataatual);
+$interval = new DateInterval('P1M');
+$date->sub($interval);
+
+
 
 $mes = $filtromes;      // Mês desejado, pode ser por ser obtido por POST, GET, etc.
 $ano = $filtroano; // Ano atual
-$ultimo_dia = date("t", mktime(0,0,0,$mes,'01',$ano)); // Mágica, plim!
 
-$data = $ano."-".$mes."-".$ultimo_dia;
-$dataatual = date('Y-m-d',strtotime($data));
+
+
 
 switch($filtromes){
 	case 1:
@@ -67,8 +114,6 @@ switch($filtromes){
 	break;
 }
 
-
-$clube = $_POST['clube'];
 
 //Pega informações do Clube
 $sq = "SELECT * FROM rfa_clubes WHERE id_clube='$clube'";
@@ -356,22 +401,22 @@ $somasaldo = ($fundogeral + $totalgeralk);
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Receitas Adicionais:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($row_recptotal['valor'],2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalReceitasMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
 	 ".$teste."
 	 
 	 
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Mensalidades previstas:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($row_mttotal['valor'],2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalMensalidadesMesPrevistas($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Mensalidades Pagas:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($row_mtptotal['valor'],2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalMensalidadesMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Total de Receitas:</td>
- 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($receitatotal,2,',','.')."</td>
+ 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalReceitaMensalidadeMes(),2,',','.')."</td>
  	</tr>
  	
 </table>
@@ -382,11 +427,11 @@ $somasaldo = ($fundogeral + $totalgeralk);
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Inadimplêntes do mês:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($row_inadtotalm['valor'], 2, ',', '.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalInadimplenciasMes($clube, $filtromes, $filtroano), 2, ',', '.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Inadimplêntes Acumulados:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($row_inadtotal['valor'], 2, ',', '.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalInadimplencias($clube), 2, ',', '.')."</td>
  	</tr>
 </table>
 <br>
@@ -419,19 +464,23 @@ $somasaldo = ($fundogeral + $totalgeralk);
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Despesas Ordinárias:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadodespesastaxa,2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalDespesasMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Despesas extraordinárias (fundos):</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadofundo,2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalFundosMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Taxas de boletos:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($row_txtotal['valor'],2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalTaxasBoletosMes($clube, $filtromes, $filtroano),2,',','.')."</td>
+ 	</tr>
+	 <tr>
+ 		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Taxas de mensalidades:</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalTaxasMensalidadesMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Total de despesas:</td>
- 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadodespesa,2,',','.')."</td>
+ 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalSaidasMes(),2,',','.')."</td>
  	</tr>
  </table>
 <br>
@@ -446,7 +495,7 @@ $somasaldo = ($fundogeral + $totalgeralk);
  	".$listardespesas."
  	<tr>
  		<td width='200' style='background: #e4e4e4;border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Despesa total:</td>
- 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadodespesastaxa,2,',','.')."</td>
+ 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalDespesasMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  </table>
 <br>
@@ -461,7 +510,7 @@ $somasaldo = ($fundogeral + $totalgeralk);
  	".$listarfd."
  	<tr>
  		<td width='200' style='background: #e4e4e4;border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Fundo total:</td>
- 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadofundo,2,',','.')."</td>
+ 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalFundos($clube),2,',','.')."</td>
  	</tr>
 
 </table>
@@ -473,23 +522,27 @@ $somasaldo = ($fundogeral + $totalgeralk);
  	</tr>
  	<tr>
  		<td width='200' style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(+) Entradas:</td>
- 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($receitatotal,2,',','.')."</td>
+ 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalReceitaMensalidadeMes(),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(-) Taxas de boletos:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($row_txtotal['valor'],2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalTaxasBoletosMes($clube, $filtromes, $filtroano),2,',','.')."</td>
+ 	</tr>
+	 <tr>
+ 		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(-) Taxas de mensalidades:</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalTaxasMensalidadesMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(-) Despesas Ordinárias:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadodespesastaxa,2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalDespesasMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(-) Fundo de reserva do mês:</td>
- 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadofundo,2,',','.')."</td>
+ 		<td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalFundosMes($clube, $filtromes, $filtroano),2,',','.')."</td>
  	</tr>
  	<tr>
  		<td width='200' style='background: #e4e4e4;border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Saldo do mês:</td>
- 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($totalentrada,2,',','.')."</td>
+ 		<td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalSaldoMes(),2,',','.')."</td>
  	</tr>
 </table>
 
@@ -500,20 +553,20 @@ $somasaldo = ($fundogeral + $totalgeralk);
 </tr>
 <tr>
    <td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(=) Acumulado mês passado:</td>
-   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($saldoacumanterior,2,',','.')."</td>
+   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalSaldoMesPassado(),2,',','.')."</td>
 </tr>
 <tr>
    <td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(+) Acumulado deste mês:</td>
-   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($totalgeralk,2,',','.')."</td>
+   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalSaldo(),2,',','.')."</td>
 </tr>
 <tr>
    <td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>(+) Acumulado Fundo de Reserva:</td>
-   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($fundogeral,2,',','.')."</td>
+   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalFundos($clube),2,',','.')."</td>
 </tr>
 
 <tr>
    <td width='200' style='background: #e4e4e4;border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Saldo total:</td>
-   <td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($somasaldo,2,',','.')."</td>
+   <td style='background:#e4e4e4;border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalSaldo(),2,',','.')."</td>
 </tr>
 
 </table>
@@ -524,20 +577,15 @@ $somasaldo = ($fundogeral + $totalgeralk);
 </tr>
 <tr>
    <td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Fundo (mês anterior):</td>
-   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($fundoanterior,2,',','.')."</td>
+   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalFundosMes($clube, $date->format('m'), $date->format('Y')),2,',','.')."</td>
 </tr>
 <tr>
    <td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Fundo (mês):</td>
-   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($resultadofundo,2,',','.')."</td>
+   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalFundosMes($clube, $filtromes, $filtroano),2,',','.')."</td>
 </tr>
-<tr>
-   <td width='200' style='border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Fundo (acumulado anterior):</td>
-   <td style='border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($fundoacumanterior,2,',','.')."</td>
-</tr>
-
 <tr>
    <td width='200' style='background: #e4e4e4; border: 1px solid #000; border-collapsed: collapsed; font-weight: bold; padding: 2px'>Fundo (acumulado atual):</td>
-   <td style='background: #e4e4e4; border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($fundogeral,2,',','.')."</td>
+   <td style='background: #e4e4e4; border: 1px solid #000; border-collapsed: collapsed; padding: 2px'>R$ ".number_format($transacoes->totalFundos($clube),2,',','.')."</td>
 </tr>
 
 

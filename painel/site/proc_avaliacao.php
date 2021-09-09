@@ -14,7 +14,7 @@ $avaliacao = $_POST['avaliacao'];
 
 $clube = mysqli_real_escape_string($link, $_POST['clube']);
 
-$sql = "INSERT INTO rfa_answer_identification (cod_identification, name_id, age, profission, gender, school, clube) VALUES ('$codidentification', '$nome', '$idade', '$profissao', '$sexo', '$escolaridade', '$clube');";
+$sql = "INSERT INTO rfa_answer_identification (cod_identification, name, age, profission, gender, school, clube) VALUES ('$codidentification', '$name', '$idade', '$profissao', '$sexo', '$escolaridade', '$clube');";
 
 $count = 1;
 foreach ($avaliacao as $key => $avaliar) {

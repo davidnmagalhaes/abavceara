@@ -4,7 +4,19 @@ spl_autoload_register(function ($class) {
 });
 
 $clube = 35;
-$transacoes = new Transactions;
+$transacoes = new Transactions; 
+
+/*echo $transacoes->totalDespesasPorBanco($clube, 1172285296)."<br>";
+echo $transacoes->totalReceitasPorBanco($clube, 1172285296)."<br>";
+echo $transacoes->totalMensalidadesPorBanco($clube, 1)."<br>";
+echo $transacoes->totalFundosPorBanco($clube, 1172285296)."<br>";
+echo $transacoes->totalSaldosBancosPorBanco($clube, 1172285296)."<br>";
+echo $transacoes->totalBoletosAvulsosPorBanco($clube, 1)."<br>";
+echo $transacoes->totalRetiradasPorBanco($clube, 1172285296)."<br>";
+echo $transacoes->totalTaxasBoletosPorBanco($clube, 1)."<br>";
+echo $transacoes->totalTaxasMensalidadesPorBanco($clube, 1)."<br>";
+
+echo $transacoes->totalSaldoPorBanco();*/
 
 echo "<h2>Dados totais acumulativos</h2>";
 echo "Despesas: " . $transacoes->totalDespesas($clube);
@@ -30,7 +42,7 @@ echo "<br><br>";
 echo "Saldo Total: " . $transacoes->totalSaldo();
 echo "<br><br><br>";
 
-$filtromes = 3;
+$filtromes = 4;
 $filtroano = 2021;
 echo "<h2>Dados do mês</h2>";
 echo "Despesas por mês: " . $transacoes->totalDespesasMes($clube, $filtromes, $filtroano);

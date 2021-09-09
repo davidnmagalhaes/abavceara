@@ -1,4 +1,7 @@
 <?php
+spl_autoload_register(function ($class) {
+    require_once('class' . DIRECTORY_SEPARATOR . $class . '.php');
+  });
 
 $filtromes = $_GET['filtromes']; //Ano de Filtro
 $filtroano = $_GET['filtroano']; //Mês de Filtro
@@ -7,6 +10,40 @@ if ($filtromes == "" && $filtroano == "") {
     $filtromes = date('m'); //Mês atual
     $filtroano = date('Y'); //Ano atual
 }
+
+$transacoes = new Transactions; 
+$transacoes->totalDespesas($clube);
+$transacoes->totalReceitas($clube);
+$transacoes->totalMensalidades($clube);
+$transacoes->totalFundos($clube);
+$transacoes->totalSaldosBancos($clube);
+$transacoes->totalBoletosAvulsos($clube);
+$transacoes->totalRetiradas($clube);
+$transacoes->totalInadimplencias($clube);
+$transacoes->totalTaxasBoletos($clube);
+$transacoes->totalTaxasMensalidades($clube);
+
+$transacoes->totalDespesasMes($clube, $filtromes, $filtroano);
+$transacoes->totalDespesasMesPrevistas($clube, $filtromes, $filtroano);
+$transacoes->totalReceitasMes($clube, $filtromes, $filtroano);
+$transacoes->totalReceitasMesPrevistas($clube, $filtromes, $filtroano);
+$transacoes->totalBoletosAvulsosPrevistosMes($clube, $filtromes, $filtroano);
+$transacoes->totalFundosPrevistosMes($clube, $filtromes, $filtroano);
+$transacoes->totalRetiradasPrevistasMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasBoletosPrevistasMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasMensalidadesPrevistasMes($clube, $filtromes, $filtroano);
+$transacoes->totalMensalidadesMes($clube, $filtromes, $filtroano);
+$transacoes->totalMensalidadesMesPrevistas($clube, $filtromes, $filtroano);
+
+
+$transacoes->totalFundosMes($clube, $filtromes, $filtroano);
+$transacoes->totalBoletosAvulsosMes($clube, $filtromes, $filtroano);
+$transacoes->totalRetiradasMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasBoletosMes($clube, $filtromes, $filtroano);
+$transacoes->totalTaxasMensalidadesMes($clube, $filtromes, $filtroano);
+$transacoes->totalInadimplenciasMes($clube, $filtromes, $filtroano);
+
+
 
 $datahoje = date('Y-m-d');
 
@@ -37,7 +74,10 @@ $inadtotal = mysqli_query($link, $sqinad) or die(mysqli_error($link));
 $row_inadtotal = mysqli_fetch_assoc($inadtotal);
 
 //////////////////////////////////// Lista os Inadimplentes ///////////////////////////////////////////
-$sqlisinad = "SELECT * FROM rfa_mensalidades INNER JOIN rfs_socios ON rfa_mensalidades.id_socio = rfs_socios.id_socio WHERE rfa_mensalidades.clube='$clube' AND rfa_mensalidades.pagamento=0 ORDER BY rfs_socios.nome_socio, rfa_mensalidades.data_mensalidade";
+$hoje = new DateTime('NOW');
+$d = $hoje->format('Y-m-d');
+
+$sqlisinad = "SELECT * FROM rfa_mensalidades INNER JOIN rfs_socios ON rfa_mensalidades.id_socio = rfs_socios.id_socio WHERE rfa_mensalidades.clube='$clube' AND rfa_mensalidades.pagamento=0 AND rfa_mensalidades.data_mensalidade < '$d' ORDER BY rfs_socios.nome_socio, rfa_mensalidades.data_mensalidade";
 $lisinadtotal = mysqli_query($link, $sqlisinad) or die(mysqli_error($link));
 $row_lisinadtotal = mysqli_fetch_assoc($lisinadtotal);
 $totalRows_lisinadtotal = mysqli_num_rows($lisinadtotal);
@@ -385,7 +425,7 @@ function despesagrafico($mespg, $anopg, $clubepg)
 
                 <div class="col-sm-6 col-lg-2">
                     <a href="#" class="col" data-bs-toggle="modal" data-bs-target="#exampleModalLong" style="margin:0; padding:0;">
-                        <div class="overview-item overview-item--c3" data-toggle="tooltip" data-html="true" title="Valor acumulado de mensalidades pendentes.<Br><br><strong>Clique para ver os inadimplentes...</strong>">
+                        <div class="overview-item overview-item--c3">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="icon">
@@ -401,7 +441,9 @@ function despesagrafico($mespg, $anopg, $clubepg)
                                     <div class="text">
                                         <h2>R$
                                             <?php
-                                            echo number_format($row_inadtotal['valor'], 2, ',', '.');
+                                            //echo number_format($row_inadtotal['valor'], 2, ',', '.');
+                                            echo number_format($transacoes->totalInadimplencias($clube), 2, ',', '.');
+                                            
                                             ?>
                                         </h2>
                                         <span>Inadimplências</span>
@@ -417,7 +459,7 @@ function despesagrafico($mespg, $anopg, $clubepg)
 
                 <div class="col-sm-6 col-lg-2">
                     <a href="a-pagar.php" class="col" style="margin:0; padding:0;">
-                        <div class="overview-item overview-item--c3" data-toggle="tooltip" data-html="true" title="Soma o total de despesas do mês + o total de taxas de boletos do mês.<br><br><strong>Taxas de boletos:</strong> R$ <?php echo number_format($row_txtotal['valor'], 2, ',', '.'); ?><Br><strong>Despesas:</strong> R$ <?php echo number_format($resultadodespesastaxa, 2, ',', '.'); ?> ">
+                        <div class="overview-item overview-item--c3" >
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="icon">
@@ -426,14 +468,26 @@ function despesagrafico($mespg, $anopg, $clubepg)
                                     <div class="text">
                                         <h2>R$
                                             <?php
-                                            if ($resultadodespesa == 0) {
+                                            /*if ($resultadodespesa == 0) {
                                                 echo "0,00";
                                             } else {
                                                 echo number_format($resultadodespesa, 2, ',', '.');
-                                            };
+                                            };*/
+                                            echo number_format($transacoes->totalSaidasMes(),2,',','.');
                                             ?>
                                         </h2>
-                                        <span>Despesas /mês</span>
+                                        <span>Despesas pagas</span>
+                                        <h2>R$
+                                            <?php
+                                            /*if ($resultadodespesa == 0) {
+                                                echo "0,00";
+                                            } else {
+                                                echo number_format($resultadodespesa, 2, ',', '.');
+                                            };*/
+                                            echo number_format($transacoes->totalGeralDespesasPrevistasMes(),2,',','.');
+                                            ?>
+                                        </h2>
+                                        <span>Despesas previstas</span>
                                     </div>
                                 </div>
                                 <!--<div class="overview-chart">
@@ -446,7 +500,7 @@ function despesagrafico($mespg, $anopg, $clubepg)
 
                 <div class="col-sm-6 col-lg-2">
                     <a href="receitas.php" class="col" style="margin:0; padding:0;">
-                        <div class="overview-item overview-item--c2" data-toggle="tooltip" data-html="true" title="Soma as receitas adicionais confirmadas do mês(Ex.: refeições, doações, etc...) + mensalidades pagas do mês. <br><br><strong>Receitas:</strong> R$ <?php echo number_format($row_recptotal['valor'], 2, ',', '.'); ?><br><strong>Mensalidades pagas:</strong> R$ <?php echo number_format($row_mtptotal['valor'], 2, ',', '.'); ?>">
+                        <div class="overview-item overview-item--c2" >
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="icon">
@@ -455,14 +509,28 @@ function despesagrafico($mespg, $anopg, $clubepg)
                                     <div class="text">
                                         <h2>R$
                                             <?php
-                                            if ($receitatotal == 0) {
+                                            /*if ($receitatotal == 0) {
                                                 echo "0,00";
                                             } else {
                                                 echo number_format($receitatotal, 2, ',', '.');
-                                            };
+                                            };*/
+                                            echo number_format($transacoes->totalReceitaMensalidadeMes(),2,',','.');
+                                            
                                             ?>
                                         </h2>
-                                        <span>Receitas /mês</span>
+                                        <span>Recebido</span>
+                                        <h2>R$
+                                            <?php
+                                            /*if ($receitatotal == 0) {
+                                                echo "0,00";
+                                            } else {
+                                                echo number_format($receitatotal, 2, ',', '.');
+                                            };*/
+                                            echo number_format($transacoes->totalReceitaMensalidadePrevistaMes(),2,',','.');
+                                            
+                                            ?>
+                                        </h2>
+                                        <span>Receitas previstas</span>
                                     </div>
                                 </div>
                                 <!-- <div class="overview-chart">
@@ -476,7 +544,7 @@ function despesagrafico($mespg, $anopg, $clubepg)
 
                 <div class="col-sm-6 col-lg-2">
                     <a href="#" class="col" style="margin:0; padding:0;" data-bs-toggle="modal" data-bs-target="#ModalMensalidade">
-                        <div class="overview-item overview-item--c2" data-toggle="tooltip" data-html="true" title="Total de todas as mensalidades que o clube deverá receber este mês.">
+                        <div class="overview-item overview-item--c2" >
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="icon">
@@ -485,11 +553,12 @@ function despesagrafico($mespg, $anopg, $clubepg)
                                     <div class="text">
                                         <h2>R$
                                             <?php
-                                            if ($row_mttotal['valor'] == 0) {
+                                            /*if ($row_mttotal['valor'] == 0) {
                                                 echo "0,00";
                                             } else {
                                                 echo number_format($row_mttotal['valor'], 2, ',', '.');
-                                            };
+                                            };*/
+                                            echo number_format($transacoes->totalMensalidadesMesPrevistas($clube, $filtromes, $filtroano), 2, ',', '.');
                                             ?>
                                         </h2>
                                         <span>Mensalidades /mês</span>
@@ -504,7 +573,7 @@ function despesagrafico($mespg, $anopg, $clubepg)
                 </div>
                 <div class="col-sm-6 col-lg-2">
                     <a href="#" class="col" style="margin:0; padding:0;">
-                        <div class="overview-item overview-item--c2" data-toggle="tooltip" data-html="true" title="(Receita do mês + mensalidades pagas do mês) - (Despesas do mês)<br><br><strong>Entradas:</strong> R$ <?php echo number_format($receitatotal, 2, ',', '.'); ?><Br><strong>Saídas:</strong> R$ <?php echo number_format($resultadodespesa, 2, ',', '.'); ?>">
+                        <div class="overview-item overview-item--c2" >
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="icon">
@@ -513,11 +582,12 @@ function despesagrafico($mespg, $anopg, $clubepg)
                                     <div class="text">
                                         <h2>R$
                                             <?php
-                                            if ($totalentrada == 0) {
+                                            /*if ($totalentrada == 0) {
                                                 echo "0,00";
                                             } else {
                                                 echo number_format($totalentrada, 2, ',', '.');
-                                            };
+                                            };*/
+                                            echo number_format($transacoes->totalSaldoMes(),2,',','.');
                                             ?>
 
                                         </h2>
@@ -539,21 +609,21 @@ function despesagrafico($mespg, $anopg, $clubepg)
                                 <div class="overview-box clearfix">
 
                                     <div class="text">
-                                        <span style="font-size: 16px !important">Disponível</span>
+                                        <!--<span style="font-size: 16px !important">Disponível</span>
                                         <h2 style="font-size: 18px !important; margin: 0 0 10px 0 !important;">R$
                                             <?php
-                                            if ($totalgeral == 0) {
+                                            /*if ($totalgeral == 0) {
                                                 echo "0,00";
                                             } else {
                                                 echo number_format($totalgeral, 2, ',', '.');
-                                            };
+                                            };*/
                                             ?></h2>
                                         <span style="font-size: 16px !important">Fundo Acumulado</span>
-                                        <h2 style="font-size: 18px !important; margin: 0 0 10px 0 !important;">R$ <?php echo number_format(($row_fntotalg1['valor'] - $row_rttotalg1['valor']), 2, ',', '.'); ?></h2>
+                                        <h2 style="font-size: 18px !important; margin: 0 0 10px 0 !important;">R$ <?php //echo number_format(($row_fntotalg1['valor'] - $row_rttotalg1['valor']), 2, ',', '.'); ?></h2>
                                         <span style="font-size: 16px !important">Retiradas Fundo</span>
-                                        <h2 style="font-size: 18px !important; margin: 0 0 10px 0 !important;">R$ <?php echo number_format(($row_rttotalg1['valor']), 2, ',', '.'); ?></h2>
-                                        <span style="font-size: 16px !important">Bancos + Caixa + Fundo</span>
-                                        <h2 style="font-size: 18px !important; margin: 0 !important;">R$ <?php echo number_format((($row_fntotalg1['valor'] - $row_rttotalg1['valor']) + $totalgeral), 2, ',', '.'); ?></h2>
+                                        <h2 style="font-size: 18px !important; margin: 0 0 10px 0 !important;">R$ <?php //echo number_format(($row_rttotalg1['valor']), 2, ',', '.'); ?></h2>
+                                        --><span style="font-size: 16px !important">Bancos + Caixa + Fundo</span>
+                                        <h2 style="font-size: 18px !important; margin: 0 !important;">R$ <?php echo number_format($transacoes->totalSaldo(), 2, ',', '.'); ?></h2>
                                     </div>
                                 </div>
                                 <!--<div class="overview-chart">
@@ -1086,6 +1156,7 @@ function despesagrafico($mespg, $anopg, $clubepg)
             </section>-->
 
     <script>
+    
         function exibeinad() {
             var exibeinad = document.getElementById('exibeinad');
             if (exibeinad.style.display == 'block') {

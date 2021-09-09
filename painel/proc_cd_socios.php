@@ -17,6 +17,7 @@ if($primeiromessocio < $matual && $primeiroanosocio <= $aatual){
 /*Recebe as variáveis de cd_socios.php*/
 $nomesocio = mysqli_real_escape_string($link,$_POST['nome_socio']);
 $classifsocio = mysqli_real_escape_string($link,$_POST['classificacao']);
+$tipocnpj = mysqli_real_escape_string($link,$_POST['tipo_cnpj']);
 $idrisocio = mysqli_real_escape_string($link,$_POST['id_ri_socio']);
 $dataadmissao = mysqli_real_escape_string($link,$_POST['data_admissao']);
 $padrinho = mysqli_real_escape_string($link,$_POST['padrinho']);
@@ -89,7 +90,7 @@ $cod += 10;
 
 $datacadastro = $primeiroanosocio."-".$primeiromessocio."-".$vencimentomensalidadesocio;
 
-$sql = "INSERT INTO rfs_socios (sexo, nome_socio, classif_socio, id_ri_socio, data_admissao, padrinho, rg_socio, cpf_socio, data_nascto_socio, conjuge, data_nascto_conjuge, email_socio, telefone_socio, mensalidade_ref, mensalidade_valor, mensalidade_diavenc, mensalidade_vencimento, user, data_cadastro, mensalidade_status, clube, ref_socio, categoria_socio, telefone_conjuge, data_casamento, celular_socio, cep_socio, endereco_socio, numero_end_socio, bairro_socio, complemento_socio, cidade_socio, estado_socio, status_socio, status_cob) VALUES ('$sexo','$nomesocio', '$classifsocio', '$idrisocio', '$dataadmissao', '$padrinho', '$rgsocio', '$cpfsocio', '$datanasctosocio', '$conjuge', '$datanasctoconjuge', '$emailsocio', '$telefonesocio', '$referenciamensalidadesocio', '$valormensalidadesocio', '$vencimentomensalidadesocio', '$primeiromensalidadesocio', '$user', '$datacadastro', '$status', '$club', '$cod', '$categoriasocio', '$telefoneconjuge', '$datacasamento', '$celularsocio', '$cepsocio', '$enderecosocio', '$numeroendsocio', '$bairrosocio', '$complementosocio', '$cidadesocio', '$estadosocio', '1', '1');";
+$sql = "INSERT INTO rfs_socios (tipo_cnpj, sexo, nome_socio, classif_socio, id_ri_socio, data_admissao, padrinho, rg_socio, cpf_socio, data_nascto_socio, conjuge, data_nascto_conjuge, email_socio, telefone_socio, mensalidade_ref, mensalidade_valor, mensalidade_diavenc, mensalidade_vencimento, user, data_cadastro, mensalidade_status, clube, ref_socio, categoria_socio, telefone_conjuge, data_casamento, celular_socio, cep_socio, endereco_socio, numero_end_socio, bairro_socio, complemento_socio, cidade_socio, estado_socio, status_socio, status_cob) VALUES ('$tipocnpj', '$sexo','$nomesocio', '$classifsocio', '$idrisocio', '$dataadmissao', '$padrinho', '$rgsocio', '$cpfsocio', '$datanasctosocio', '$conjuge', '$datanasctoconjuge', '$emailsocio', '$telefonesocio', '$referenciamensalidadesocio', '$valormensalidadesocio', '$vencimentomensalidadesocio', '$primeiromensalidadesocio', '$user', '$datacadastro', '$status', '$club', '$cod', '$categoriasocio', '$telefoneconjuge', '$datacasamento', '$celularsocio', '$cepsocio', '$enderecosocio', '$numeroendsocio', '$bairrosocio', '$complementosocio', '$cidadesocio', '$estadosocio', '1', '1');";
 
 
 foreach($nomefilho as $key => $name){

@@ -535,6 +535,7 @@ $row_tipocob = mysqli_fetch_assoc($tipocob);
                       </label>
                     </td>
                     <td>Classificação</td>
+                    <td>Tipo</td>
                     <td>Membro</td>
 
 
@@ -613,6 +614,50 @@ $row_tipocob = mysqli_fetch_assoc($tipocob);
 
                                 case "operadora":
                                   echo "Operadora";
+                                  break;
+                              }
+
+
+                              ?>
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="table-data__info">
+
+                            <span class="block-email">
+                              <?php
+                              switch ($row_lis['tipo_cnpj']) {
+                                case "ss":
+                                  echo "SS";
+                                  break;
+
+                                case "mei":
+                                  echo "MEI";
+                                  break;
+
+                                case "ei":
+                                  echo "EI";
+                                  break;
+
+                                case "eireli":
+                                  echo "EIRELI";
+                                  break;
+
+                                case "sa":
+                                  echo "SA";
+                                  break;
+
+                                case "ltda":
+                                  echo "LTDA";
+                                  break;
+
+                                case "asfl":
+                                  echo "ASFL";
+                                  break;
+                                
+                                case "slu":
+                                  echo "SLU";
                                   break;
                               }
 

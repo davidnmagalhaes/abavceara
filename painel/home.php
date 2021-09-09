@@ -120,7 +120,7 @@ $regra10 =  $totalRows_lisdatasimp < 1;
 
     <?php include("head.php");?>
 
-
+<script src="https://unpkg.com/@popperjs/core@2"></script>
 
 </head>
 

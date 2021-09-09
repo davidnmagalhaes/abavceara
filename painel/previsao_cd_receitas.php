@@ -1,5 +1,5 @@
 <?php
-$page = 3; 
+$page = 3;
 
 include('config-header.php');
 

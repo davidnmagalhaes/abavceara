@@ -1281,7 +1281,7 @@ width: 100%;
 border: solid #ccc 1px;
 margin-bottom: 20px;
 padding-bottom: 0px;
-height:162px;
+min-height:162px;
 }
 .team .card2 {
 float: left;
