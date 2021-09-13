@@ -61,11 +61,22 @@ $totalRows_blog2 = mysqli_num_rows($blog2);
 
       </section>
       <section id="contant" class="contant main-heading team">
-         <?php while($row_socios = mysqli_fetch_array($socios)){ ?>
+         <?php while($row_socios = mysqli_fetch_array($socios)){ 
+         $today = date('Y-m-d');
+         $datetime = Datetime::createFromFormat('Y-m-d', $today);
+         $datetime->modify('-3 months');
+         $datemonths = $datetime->format('Y-m-d');
+         
+         $idsoc = $row_socios['id_socio'];
+         $querymsl = "SELECT * FROM rfa_mensalidades WHERE clube='$clube' AND id_socio='$idsoc' AND pagamento = 0 AND data_mensalidade >= $datemonths";
+         $listCurrencies = mysqli_query($link, $querymsl) or die(mysqli_error($link));
+         $totalRows_currencies = mysqli_num_rows($listCurrencies);   
+         if($totalRows_currencies <= 3){
+         ?>
+         
+         
          <div class="row">
             <div class="container">
-
-               
                <div class="col-md-2">
                   <div class="card">
                      <img class="img-responsive" src="<?php if(empty($row_socios['imagem']) && $row_socios['sexo'] =='m'){echo 'images/male.jpg';}elseif(empty($row_socios['imagem']) && $row_socios['sexo'] =='f'){echo 'images/female.jpg';}else{echo '../'.$row_socios['imagem'];}?>" style="width:100%">
@@ -93,7 +104,7 @@ $totalRows_blog2 = mysqli_num_rows($blog2);
                
             </div>
          </div>
-         <?php } ?>
+         <?php }} ?>
       </section>
       
 <?php include('footer.php'); ?>
