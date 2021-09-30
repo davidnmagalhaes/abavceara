@@ -537,8 +537,7 @@ $row_tipocob = mysqli_fetch_assoc($tipocob);
                     <td>Classificação</td>
                     <td>Tipo</td>
                     <td>Membro</td>
-
-
+                    <td>Categoria</td>
                     <td>Vencimento</td>
                     <td>Mensalidade</td>
                     <td>Review</td>
@@ -676,7 +675,11 @@ $row_tipocob = mysqli_fetch_assoc($tipocob);
                         </td>
 
 
-
+                        <td>
+                        <span class="block-email">
+                        <?php if($row_lis['categoria_socio'] == 'associado'){echo "Associado";}else if($row_lis['categoria_socio'] == 'afiliado'){echo "Afiliado";}else{} ?>
+                        </span>
+                        </td>
 
                         <td>
                           <span class="block-email">

@@ -1,4 +1,4 @@
-<?php 
+<?php
 //Conexão com banco de dados
 include_once("../config.php");
 
@@ -32,288 +32,166 @@ $totalRows_blog2 = mysqli_num_rows($blog2);
 
 <!DOCTYPE html>
 <html lang="pt-br">
-   <meta charset="utf-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <title><?php echo $row_topo['title_seo']; ?></title>
-   <meta name="keywords" content="<?php echo $row_topo['keyword_seo']; ?>">
-   <meta name="description" content="<?php echo $row_topo['description_seo']; ?>">
-   <meta name="author" content="David Magalhães">
-   
-<?php include('head.php');?>
 
-<style>
-    img {
-  block-size: auto;
-  max-inline-size: 100%;
-  vertical-align: middle;
-}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title><?php echo $row_topo['title_seo']; ?></title>
+  <meta name="keywords" content="<?php echo $row_topo['keyword_seo']; ?>">
+  <meta name="description" content="<?php echo $row_topo['description_seo']; ?>">
+  <meta name="author" content="David Magalhães">
 
-/* Embed */
+  <?php include('head.php'); ?>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
-.embed {
-  overflow: hidden;
-  padding-block-start: 100%;
-  position: relative;
-}
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/css/lightgallery.css'>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/css/lg-zoom.css'>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.3/css/lg-thumbnail.css'>
 
-.embed--1-2 {
-  padding-top: calc(100% / (1 / 2));
-}
+  <style>
+    .inline-gallery-container {
+      width: 98%;
+      height: 450px;
+      display: flex;
+    }
 
-.embed--2-1 {
-  padding-top: calc(100% / (2 / 1));
-}
+    .header {
+      width: 100%;
+      height: 400px;
+      background: #000
+    }
 
-.embed--2-3 {
-  padding-top: calc(100% / (2 / 3));
-}
+    .titulo-topo-hotel {
+      position: relative;
+      top: 372px;
+      color: #fff;
+      font-size: 70px;
+      font-variant-caps: all-small-caps;
+    }
 
-.embed > * {
-  height: 100%;
-  left: 0;
-  object-fit: cover;
-  padding: 0.25em;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
+    .gallery-hotel {
+      height: 500px;
+      display: flex;
+      justify-content: center;
 
-/* Gallery  */
+    }
+  </style>
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-}
+  <link rel="stylesheet" href="css/lightbox.css">
+</head>
 
-.gallery__item--h-2 {
-  grid-column-end: span 2;
-}
+<body class="game_info" data-spy="scroll" data-target=".header">
 
-.gallery__item--h-3 {
-  grid-column-end: span 3;
-}
+  <section id="top">
+    <?php include('header.php'); ?>
+    <div class="inner-page-banner">
+      <div class="container">
+        <h1 class="titulo-topo-hotel"><?php echo $hoteldata['nome_hotel'] ?></h1>
+      </div>
+    </div>
+  </section>
 
-.gallery__item--v-2 {
-  grid-row-end: span 2;
-}
+  <section id="contant" class="contant main-heading team" style="padding: 50px 0 0 0">
+    <div class="row">
+      <div class="container">
 
-.gallery__item--v-3 {
-  grid-row-end: span 3;
-}
+        <div class="col-md-2">
+          <div class="card">
+            <img class="img-responsive" src="../<?php echo $hoteldata['imagem_hotel']; ?>" style="width:100%">
 
-#mapa iframe{
-    width: 100% !important;
-}
+          </div>
+        </div>
 
-</style>
-   </head>
-   <body class="game_info" data-spy="scroll" data-target=".header">
-      
-      <section id="top">
-         
-<?php include('header.php'); ?>
+        <div class="col-md-10 ">
+          <div class="card">
 
-         <div class="inner-page-banner">
-            <div class="container">
-<h1 class="titulo-topo"><?php echo $hoteldata['nome_hotel']; ?></h1>
+            <div class="">
+              <h2 style="margin-top: 15px"><?php echo $hoteldata['nome_hotel']; ?></h2>
+              <p class="title"><?php echo $hoteldata['endereco_hotel'] . ", " . $row_socios['numero_hotel'] . ", " . $hoteldata['bairro_hotel'] . ", " . $row_socios['cidade_hotel'] . ", " . $hoteldata['estado_hotel']; ?></p>
+              <p class="title">
+                <?php echo "<strong>Contatos: </strong>" . $hoteldata['telefone_hotel']; ?>
+
+                <br>
+                <?php echo $hoteldata['email_hotel']; ?>
+                <!--<div class="center"><button class="button">Contact</button></div>-->
+              </p>
             </div>
+          </div>
+        </div>
 
-         </div>
 
-      </section>
-      <section id="contant" class="contant main-heading team">
-         <div class="row">
-            <div class="container">
+      </div>
+    </div>
 
-               <div class="row">
-               <div class="col-md-2">
-                  <div class="card">
-                     <img class="img-responsive" src="../<?php echo $hoteldata['imagem_hotel'];?>" style="width:100%">
-                     
-                  </div>
-               </div>
+  </section>
 
-               <div class="col-md-10 ">
-                  <div class="card">
-                     
-                     
-                        <h2 style="margin-top: 15px"><?php echo $hoteldata['nome_hotel'];?>
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="far fa-star" style="color: #f7cd00"></i>
-                        </h2>
-                        <p class="title"><?php echo $hoteldata['endereco_hotel'].", ".$hoteldata['numero_hotel'].", ".$hoteldata['bairro_hotel'].", ".$hoteldata['cidade_hotel'].", ".$hoteldata['estado_hotel'];?></p>
-                        <p class="title">
-                           <?php echo "<strong>Contatos: </strong>".$hoteldata['telefone_hotel'];?>
-                          
-                           <br>
-                           <?php echo $hoteldata['email_hotel'];?>
-                        <!--<div class="center"><button class="button">Contact</button></div>-->
-                        </p>
-                    
-                  </div>
-               </div>
-               
-               <div class="col-md-12 ">
-                  <div class="card">
-                     
-                   <div class="gallery">
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto1.jpg" />
-    </div>
+  <div class="container d-flex justify-content-center gallery-hotel">
+    <div id="inline-gallery-container" class="inline-gallery-container"></div>
   </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto2.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto3.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--v-2">
-    <div class="embed embed--1-2">
-      <img src="images/hoteis/foto4.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto5.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--h-2">
-    <div class="embed embed--2-1">
-      <img src="images/hoteis/foto6.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--v-2">
-    <div class="embed embed--1-2">
-      <img src="images/hoteis/foto7.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--h-2">
-    <div class="embed embed--2-1">
-      <img src="images/hoteis/foto8.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--v-2">
-    <div class="embed embed--1-2">
-      <img src="images/hoteis/foto9.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--h-2 gallery__item--v-2">
-    <div class="embed">
-      <img src="images/hoteis/foto10.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto11.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--h-2 gallery__item--v-2">
-    <div class="embed">
-      <img src="images/hoteis/foto12.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto13.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--h-2 gallery__item--v-3">
-    <div class="embed embed--2-3">
-      <img src="images/hoteis/foto14.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--h-2 gallery__item--v-2">
-    <div class="embed">
-      <img src="images/hoteis/foto15.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item gallery__item--v-2">
-    <div class="embed embed--1-2">
-      <img src="images/hoteis/foto16.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto17.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto18.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto19.jpg" />
-    </div>
-  </div>
-  <div class="gallery__item">
-    <div class="embed">
-      <img src="images/hoteis/foto20.jpg" />
-    </div>
-  </div>
-</div>
-         
-                  </div>
-               </div>
-               
-               
-               <div class="row">
-                   <div class="col-12"><h1>Depoimentos</h1></div>
-               </div>
-               
-               <div class="col-md-12 ">
-                  <div class="card">
-                     
-                     
-                        <h2 style="margin-top: 15px">Marcos Paulo de Oliveira
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="fas fa-star" style="color: #f7cd00"></i>
-                        <i class="far fa-star" style="color: #f7cd00"></i>
-                        </h2>
-                        <p class="title">
-                            O hotel é sensacional, desde o check-in até o check-out, a atendente Paula foi ótima. Os quartos com ar-condicionado funcionando perfeitamente, e as piscinas são show!
-                        </p></p>
-                       
-                  </div>
-               </div>
-               
-               <?php
-               if(empty($hoteldata['frame'])){}else{
-               ?>
-               <div class="col-md-12 mb-5">
-                   <div id="mapa" style="width: 100%; min-height: 300px">
-                       <?php echo $hoteldata['frame'];?>
-                   </div>
-               </div>
-               <?php }?>
-               
-               
-               </div>
-               
-            </div>
-         </div>
-      </section>
-      
-<?php include('footer.php'); ?>
 
-      <a href="#home" data-scroll class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
-   
-  
-      <script src="js/all.js"></script>
-      <script src="js/custom.js"></script>
-      
-   </body>
+  <script id="rendered-js" type="module">
+    import lightGallery from "https://cdn.skypack.dev/lightgallery@2.0.0-beta.3";
+
+    import lgZoom from "https://cdn.skypack.dev/lightgallery@2.0.0-beta.3/plugins/zoom";
+    import lgThumbnail from "https://cdn.skypack.dev/lightgallery@2.0.0-beta.3/plugins/thumbnail";
+
+    const $lgContainer = document.getElementById("inline-gallery-container");
+
+    const inlineGallery = lightGallery($lgContainer, {
+      container: $lgContainer,
+      dynamic: true,
+      // Turn off hash plugin in case if you are using it
+      // as we don't want to change the url on slide change
+      hash: false,
+      // Do not allow users to close the gallery
+      closable: false,
+      // Add maximize icon to enlarge the gallery
+      showMaximizeIcon: true,
+      // Append caption inside the slide item
+      // to apply some animation for the captions (Optional)
+      appendSubHtmlTo: ".lg-item",
+      // Delay slide transition to complete captions animations
+      // before navigating to different slides (Optional)
+      // You can find caption animation demo on the captions demo page
+      slideDelay: 400,
+      plugins: [lgZoom, lgThumbnail],
+      dynamicEl: [{
+          src: "https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
+          responsive: "https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80 800",
+          thumb: "https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80",
+
+        },
+
+        {
+          src: "https://images.unsplash.com/photo-1473876988266-ca0860a443b8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
+          responsive: "https://images.unsplash.com/photo-1473876988266-ca0860a443b8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1473876988266-ca0860a443b8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80 800",
+          thumb: "https://images.unsplash.com/photo-1473876988266-ca0860a443b8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80",
+
+        },
+
+      ],
+
+      // Completely optional
+      // Adding as the codepen preview is usually smaller
+      thumbWidth: 60,
+      thumbHeight: "40px",
+      thumbMargin: 4
+    });
+
+
+    setTimeout(() => {
+      inlineGallery.openGallery();
+    }, 200);
+    //# sourceURL=pen.js
+  </script>
+  <?php include('footer.php'); ?>
+
+  <a href="#home" data-scroll class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+  <!-- ALL JS FILES -->
+  <script src="js/all.js"></script>
+  <!-- ALL PLUGINS -->
+  <script src="js/custom.js"></script>
+</body>
+
 </html>

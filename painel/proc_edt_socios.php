@@ -7,6 +7,7 @@ $nomesocio = mysqli_real_escape_string($link,$_POST['nome_socio']);
 $idsoc = mysqli_real_escape_string($link,$_POST['idsoc']);
 $classifsocio = mysqli_real_escape_string($link,$_POST['classificacao']);
 $tipocnpj = mysqli_real_escape_string($link,$_POST['tipo_cnpj']);
+$categoria = mysqli_real_escape_string($link,$_POST['categoria']);
 $idrisocio = mysqli_real_escape_string($link,$_POST['id_ri_socio']);
 $dataadmissao = mysqli_real_escape_string($link,$_POST['data_admissao']);
 $padrinho = mysqli_real_escape_string($link,$_POST['padrinho']);
@@ -62,7 +63,7 @@ $row_lis = mysqli_fetch_assoc($lis);
 $cod = $row_lis['ref_socio'];
 	
 
-$sql = "UPDATE rfs_socios SET tipo_cnpj = '$tipocnpj', sexo = '$sexo', categoria_socio='$categoriasocio', telefone_conjuge='$telefoneconjuge', data_casamento='$datacasamento', celular_socio='$celularsocio', cep_socio='$cepsocio', endereco_socio='$enderecosocio', numero_end_socio='$numeroendsocio', bairro_socio='$bairrosocio', complemento_socio='$complementosocio', cidade_socio='$cidadesocio', estado_socio='$estadosocio', nome_socio='$nomesocio', classif_socio='$classifsocio', id_ri_socio='$idrisocio', data_admissao='$dataadmissao', padrinho='$padrinho', rg_socio='$rgsocio', cpf_socio='$cpfsocio', data_nascto_socio='$datanasctosocio', conjuge='$conjuge', data_nascto_conjuge='$datanasctoconjuge', email_socio='$emailsocio', telefone_socio='$telefonesocio', mensalidade_ref='$referenciamensalidadesocio', mensalidade_valor='$valormensalidadesocio', mensalidade_diavenc='$vencimentomensalidadesocio', mensalidade_vencimento='$primeiromensalidadesocio' WHERE id_socio='$idsoc';";
+$sql = "UPDATE rfs_socios SET categoria_socio = '$categoria', tipo_cnpj = '$tipocnpj', sexo = '$sexo', telefone_conjuge='$telefoneconjuge', data_casamento='$datacasamento', celular_socio='$celularsocio', cep_socio='$cepsocio', endereco_socio='$enderecosocio', numero_end_socio='$numeroendsocio', bairro_socio='$bairrosocio', complemento_socio='$complementosocio', cidade_socio='$cidadesocio', estado_socio='$estadosocio', nome_socio='$nomesocio', classif_socio='$classifsocio', id_ri_socio='$idrisocio', data_admissao='$dataadmissao', padrinho='$padrinho', rg_socio='$rgsocio', cpf_socio='$cpfsocio', data_nascto_socio='$datanasctosocio', conjuge='$conjuge', data_nascto_conjuge='$datanasctoconjuge', email_socio='$emailsocio', telefone_socio='$telefonesocio', mensalidade_ref='$referenciamensalidadesocio', mensalidade_valor='$valormensalidadesocio', mensalidade_diavenc='$vencimentomensalidadesocio', mensalidade_vencimento='$primeiromensalidadesocio' WHERE id_socio='$idsoc';";
 
 foreach($nomefilho2 as $ke => $name2){
 $sql .= "INSERT INTO rfa_socios_filhos (nome_filho, data_nascto_filho, id_socio) VALUES ('$name2', '$datanasctofilho2[$ke]', '$cod');";

@@ -321,7 +321,7 @@ include('config-header.php');
 
 
 
-									<div class="col-12 col-md-3">
+									<div class="col-12 col-md-2">
 										<div class="form-group">
 											<label for="cpf_socio" class="form-control-label ">CNPJ do Associado</label>
 											<input type="text" name="cpf_socio" maxlength="18" onkeydown="javascript: fMasc( this, mCNPJ );" id="cpf_socio" class="form-control" required>
@@ -332,10 +332,20 @@ include('config-header.php');
 									</div>
 
 
-									<div class="col-12 col-md-3">
+									<div class="col-12 col-md-2">
 										<div class="form-group">
 											<label for="id_ri_socio" class=" form-control-label">Nº de Registro</label>
 											<input type="text" name="id_ri_socio" maxlength="45" id="id_ri_socio" class="form-control" required placeholder="Digite o número de registro">
+										</div>
+									</div>
+									<div class="col-12 col-md-2">
+										<div class="form-group">
+											<label for="categoria" class=" form-control-label">Categoria</label>
+											<select name="categoria" class="form-control" required>
+												<option selected disabled>Selecione...</option>
+												<option value="associado">Associado</option>
+												<option value="afiliado">Afiliado</option>
+											</select>
 										</div>
 									</div>
 

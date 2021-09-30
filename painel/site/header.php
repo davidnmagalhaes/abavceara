@@ -1,4 +1,4 @@
-<?php 
+<?php
 $sqlcb = "SELECT * FROM rfa_clubes WHERE id_clube='$clube'";
 $licb = mysqli_query($link, $sqlcb) or die(mysqli_error($link));
 $row_licb = mysqli_fetch_assoc($licb);
@@ -15,129 +15,134 @@ $ativabal = $row_showbal['balanco'];
 
 
 <div class="modal fade" id="balanco" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Selecione a data do balanço financeiro</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="../mpdf/balanco-financeiro.php" method="post" target="_blank">
-      <div class="modal-body">
-        <div class="row">
-            <div class="col">
-                <select class="form-control" name="filtroano" style="width: 80%; margin: 10px auto;" required>
-                     <option value="" selected="selected">Selecione o ano</option>
-                     <option value="<?php echo date("Y");?>"><?php echo date("Y");?></option>
-                     <option value="<?php echo (date("Y")-1);?>"><?php echo (date("Y")-1);?></option>
-                     <option value="<?php echo (date("Y")-2);?>"><?php echo (date("Y")-2);?></option>
-                     <option value="<?php echo (date("Y")-3);?>"><?php echo (date("Y")-3);?></option>
-                </select>
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Selecione a data do balanço financeiro</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="../mpdf/balanco-financeiro.php" method="post" target="_blank">
+            <div class="modal-body">
+               <div class="row">
+                  <div class="col">
+                     <select class="form-control" name="filtroano" style="width: 80%; margin: 10px auto;" required>
+                        <option value="" selected="selected">Selecione o ano</option>
+                        <option value="<?php echo date("Y"); ?>"><?php echo date("Y"); ?></option>
+                        <option value="<?php echo (date("Y") - 1); ?>"><?php echo (date("Y") - 1); ?></option>
+                        <option value="<?php echo (date("Y") - 2); ?>"><?php echo (date("Y") - 2); ?></option>
+                        <option value="<?php echo (date("Y") - 3); ?>"><?php echo (date("Y") - 3); ?></option>
+                     </select>
+                  </div>
+                  <div class="col">
+                     <select class="form-control" name="filtromes" style="width: 80%; margin: 10px auto;" required>
+                        <option value="" selected="selected">Selecione o mês</option>
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                     </select>
+                  </div>
+               </div>
             </div>
-            <div class="col">
-                <select class="form-control" name="filtromes" style="width: 80%; margin: 10px auto;" required>
-                     <option value="" selected="selected">Selecione o mês</option>
-                     <option value="1">Janeiro</option>
-                     <option value="2">Fevereiro</option>
-                     <option value="3">Março</option>
-                     <option value="4">Abril</option>
-                     <option value="5">Maio</option>
-                     <option value="6">Junho</option>
-                     <option value="7">Julho</option>
-                     <option value="8">Agosto</option>
-                     <option value="9">Setembro</option>
-                     <option value="10">Outubro</option>
-                     <option value="11">Novembro</option>
-                     <option value="12">Dezembro</option>
-                </select>
+            <input type="hidden" name="clube" value="<?php echo $clube; ?>">
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+               <button type="submit" class="btn btn-primary">Gerar balanço</button>
             </div>
-        </div>
+         </form>
       </div>
-      <input type="hidden" name="clube" value="<?php echo $clube;?>">
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-primary">Gerar balanço</button>
-      </div>
-      </form>
-    </div>
-  </div>
+   </div>
 </div>
 
-<header>
-            <div class="container">
-               <div class="header-top">
-                  <div class="row">
-                     <div class="col-md-6">
-                        <div class="full">
-                           <div class="logo">
-                              <a href="clube<?php echo $clube; ?>"><img src="../<?php echo $row_topo['logo_topo']; ?>" alt="#" class="img-logo" /></a>
-                           </div>
-                           <?php if($status_urgente == 1){?><div class="botaourgente"><a href="urgente<?php echo $clube;?>" class="btn btn-danger bturgente" style="background: #bb1212"><?php echo $iconeurgente." ".$titulourgente;?></a></div><?php }else{}?>
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="right_top_section">
-                           <!-- social icon -->
-                           <ul class="social-icons pull-left">
-                              <?php if($row_topo['facebook_url'] == ""){}else{ ?><li><a class="facebook" href="<?php echo $row_topo['facebook_url']; ?>"><i class="fab fa-facebook"></i></a></li><?php } ?>
-                              <?php if($row_topo['insta_url'] == ""){}else{ ?><li><a class="twitter" href="<?php echo $row_topo['insta_url']; ?>"><i class="fab fa-instagram"></i></a></li><?php } ?>
-                              <?php if($row_topo['youtube_url'] == ""){}else{ ?><li><a class="youtube" href="<?php echo $row_topo['youtube_url']; ?>"><i class="fab fa-youtube"></i></a></li><?php } ?>
-                              
-                           </ul>
-                           <!-- end social icon -->
-                           <!-- button section -->
-                           <ul class="login">
+<div>
+   <div class="container">
+      <div class="header-top">
+         <div class="row">
+            <div class="col-md-6">
+               <div class="full">
+                  <div class="logo">
+                     <a href="clube<?php echo $clube; ?>"><img src="../<?php echo $row_topo['logo_topo']; ?>" alt="#" class="img-logo" /></a>
+                  </div>
+                  <?php if ($status_urgente == 1) { ?><div class="botaourgente"><a href="urgente<?php echo $clube; ?>" class="btn btn-danger bturgente" style="background: #bb1212"><?php echo $iconeurgente . " " . $titulourgente; ?></a></div><?php } else {
+                                                                                                                                                                                                                                       } ?>
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="right_top_section">
+                  <!-- social icon -->
+                  <ul class="social-icons pull-left">
+                     <?php if ($row_topo['facebook_url'] == "") {
+                     } else { ?><li><a class="facebook" href="<?php echo $row_topo['facebook_url']; ?>"><i class="fab fa-facebook"></i></a></li><?php } ?>
+                     <?php if ($row_topo['insta_url'] == "") {
+                     } else { ?><li><a class="twitter" href="<?php echo $row_topo['insta_url']; ?>"><i class="fab fa-instagram"></i></a></li><?php } ?>
+                     <?php if ($row_topo['youtube_url'] == "") {
+                     } else { ?><li><a class="youtube" href="<?php echo $row_topo['youtube_url']; ?>"><i class="fab fa-youtube"></i></a></li><?php } ?>
 
-                           <?php if($ativabal==1){?>
-                              <li class="login-modal">
-                                 <a href="#" class="login" data-toggle="modal" data-target="#balanco"><i class="fas fa-file-invoice"></i>Balanço</a>
-                              </li>
-                              <?php }else{}?>
+                  </ul>
+                  <!-- end social icon -->
+                  <!-- button section -->
+                  <ul class="login">
 
-                              <li class="login-modal">
-                                 <a href="../home" class="login"><i class="fa fa-user"></i>Painel Administrativo</a>
-                              </li>
-                              <!--<li>
+                     <?php if ($ativabal == 1) { ?>
+                        <li class="login-modal">
+                           <a href="#" class="login" data-toggle="modal" data-target="#balanco"><i class="fas fa-file-invoice"></i>Balanço</a>
+                        </li>
+                     <?php } else {
+                     } ?>
+
+                     <li class="login-modal">
+                        <a href="../home" class="login"><i class="fa fa-user"></i>Painel Administrativo</a>
+                     </li>
+                     <!--<li>
                                  <div class="cart-option">
                                     <a href="#"><i class="fa fa-shopping-cart"></i>Register</a>
                                  </div>
                               </li>-->
-                           </ul>
-                           <!-- end button section -->
-                        </div>
-                     </div>
-                  </div>
+                  </ul>
+                  <!-- end button section -->
                </div>
-               
-                
+            </div>
+         </div>
+      </div>
 
-               <div class="header-bottom">
-                  <div class="row">
-                     <div class="col-md-12">
 
-                        <div class="full">
-                           <div class="main-menu-section">
-                              <div class="menu">
 
-                                 
+      <div class="header-bottom">
+         <div class="row">
+            <div class="col-md-12">
 
-                                 <nav class="navbar navbar-inverse">
-                                    <div class="navbar-header">
-                                       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
-                                       <span class="sr-only">Navegação</span>
-                                       <span class="icon-bar"></span>
-                                       <span class="icon-bar"></span>
-                                       <span class="icon-bar"></span>
-                                       </button>
-                                       <a class="navbar-brand" href="#">Menu</a>
-                                    </div>
-                                    <div class="collapse navbar-collapse js-navbar-collapse">
-                                       <ul class="nav navbar-nav">
-                                          
-                                          <?php include('menu.php'); ?>
+               <div class="full">
+                  <div class="main-menu-section">
+                     <div class="menu">
 
-                                          <!--<li class="dropdown mega-dropdown">
+
+
+                        <nav class="navbar navbar-inverse">
+                           <div class="navbar-header">
+                              <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+                                 <span class="sr-only">Navegação</span>
+                                 <span class="icon-bar"></span>
+                                 <span class="icon-bar"></span>
+                                 <span class="icon-bar"></span>
+                              </button>
+                              <a class="navbar-brand" href="#">Menu</a>
+                           </div>
+                           <div class="collapse navbar-collapse js-navbar-collapse">
+                              <ul class="nav navbar-nav">
+
+                                 <?php include('menu.php'); ?>
+
+                                 <!--<li class="dropdown mega-dropdown">
                                              <a href="match" class="dropdown-toggle" data-toggle="dropdown">Match<span class="caret"></span></a>				
                                              <ul class="dropdown-menu mega-dropdown-menu">
                                                 <li class="col-sm-8">
@@ -186,12 +191,12 @@ $ativabal = $row_showbal['balanco'];
                                                 </li>
                                              </ul>
                                           </li>-->
-                                          
-                                          </ul>
-                                    </div>
-                                    <!-- /.nav-collapse -->
-                                 </nav>
-                                 <!--<div class="search-bar">
+
+                              </ul>
+                           </div>
+                           <!-- /.nav-collapse -->
+                        </nav>
+                        <!--<div class="search-bar">
                                     <div id="imaginary_container">
                                        <div class="input-group stylish-input-group">
                                           <input type="text" class="form-control"  placeholder="Search" >
@@ -201,11 +206,11 @@ $ativabal = $row_showbal['balanco'];
                                        </div>
                                     </div>
                                  </div>-->
-                              </div>
-                           </div>
-                        </div>
                      </div>
                   </div>
                </div>
             </div>
-         </header>
+         </div>
+      </div>
+   </div>
+</div>

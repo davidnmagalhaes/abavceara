@@ -341,7 +341,7 @@ $row_lisfilho = mysqli_fetch_assoc($lisfilho);
 											<input type="text" name="nome_socio" id="nome_socio" placeholder="Digite o nome completo do sócio" class="form-control" value="<?php echo $row_lis['nome_socio']; ?>" required>
 										</div>
 									</div>
-									<div class="col-12 col-md-3">
+									<div class="col-12 col-md-2">
 										<div class="form-group">
 											<label for="cpf_socio" class=" form-control-label">CNPJ do Associado</label>
 											<input type="text" name="cpf_socio" maxlength="18" onkeydown="javascript: fMasc( this, mCNPJ );" value="<?php echo $row_lis['cpf_socio']; ?>" id="cpf_socio" class="form-control" onBlur="faz()" required>
@@ -349,10 +349,21 @@ $row_lisfilho = mysqli_fetch_assoc($lisfilho);
 
 
 									</div>
-									<div class="col-12 col-md-3">
+									<div class="col-12 col-md-2">
 										<div class="form-group">
 											<label for="id_ri_socio" class=" form-control-label">Nº de Registro</label>
 											<input type="text" name="id_ri_socio" maxlength="45" id="id_ri_socio" class="form-control" placeholder="Digite o número de registro" value="<?php echo $row_lis['id_ri_socio']; ?>">
+										</div>
+									</div>
+
+									<div class="col-12 col-md-2">
+										<div class="form-group">
+											<label for="categoria" class=" form-control-label">Categoria</label>
+											<select name="categoria" class="form-control" value="<?php echo $row_lis['categoria_socio']; ?>" required>
+												<option selected disabled>Selecione...</option>
+												<option value="associado">Associado</option>
+												<option value="afiliado">Afiliado</option>
+											</select>
 										</div>
 									</div>
 
